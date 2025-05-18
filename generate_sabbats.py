@@ -22,6 +22,7 @@ def main(output_path='wiccan-sabbats.ics'):
     year = datetime.date.today().year
     eph = api.load('de421.bsp')
     cal = Calendar()
+    cal.add('X-WR-CALNAME', 'Sabbats')
     cal.add('prodid', '-//Wiccan Sabbats Calendar//')
     cal.add('version', '2.0')
     cal.add('X-PUBLISHED-TTL', 'P1D')
