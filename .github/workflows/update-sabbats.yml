@@ -1,0 +1,35 @@
+name: Update Sabbat Calendar
+
+on:
+  schedule:
+    - cron: '0 0 1 1 *'
+  workflow_dispatch:
+
+jobs:
+  update-calendar:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        persist-credentials: true
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        pip install skyfield jplephem icalendar
+
+    - name: Generate ICS
+      run: |
+        python generate_sabbats.py
+
+    - name: Commit and push changes
+      uses: EndBug/add-and-commit@v9
+      with:
+        add: 'wiccan-sabbats.ics'
+        message: 'Automated update of sabbat calendar for ${{ github.event.schedule || github.event_name }}'
